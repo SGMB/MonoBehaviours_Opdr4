@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System;
 
 
-public class Transform 
+public class Transform : MonoBehaviour
 {
 	private Vector2 _position;
 	private float _rotation = 0;
@@ -30,10 +30,7 @@ public class Transform
 	public Vector2 Origin
 	{
 		get { return _imageCenter; }
-		set
-		{
-			_imageCenter = value;
-		}
+		set { _imageCenter = value; }
 	}
 
 	public float LayerDepth
@@ -47,22 +44,6 @@ public class Transform
 		get { return _active; }
 		set { _active = value; }
     }
-	public Transform() { }
-	public Transform(Vector2 position)
-    {
-		Position = position;
-    }
+	public Transform(){ }
 
-	public Transform(Vector2 position, float rotation)
-    {
-		Position = position;
-		Rotation = rotation;
-    }
-
-	public Transform(Vector2 position, float rotation, Vector2 scale)
-    {
-		Position = position;
-		Rotation = rotation;
-		Scale = scale;
-	}
 }

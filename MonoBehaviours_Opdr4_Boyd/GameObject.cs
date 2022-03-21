@@ -3,31 +3,56 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using System.Diagnostics;
 using System;
+using System.Collections.Generic;
 
 public class GameObject
 {
-	public Transform transform;
-	private SpriteRenderer renderer;
+	private Transform transform;
+	private List<MonoBehaviour> _components = new List<MonoBehaviour>();
+	private MonoBehaviour monoBehaviour = new MonoBehaviour();
 
-	public GameObject(Transform trans, SpriteRenderer rend)
+	public GameObject() { }
+
+	public GameObject(Transform trans, params MonoBehaviour[] comp)
     {
 		transform = trans;
-		renderer = rend;
+		components.AddRange(comp);
+		monoBehaviour = new MonoBehaviour(this);
     }
 
-	public virtual void Draw(SpriteBatch spriteB)
-    {
-		if(transform.Active && renderer != null)
-			renderer.DrawSprite(spriteB, transform);
+	public List<MonoBehaviour> components
+	{
+		get { return _components; }
 	}
 
-	public virtual void Update(GameTime gameTime)
-    {
+	public Transform Transform
+	{
+		get { return transform; }
+		set { transform = value; }
+	}
 
+	public void Update(GameTime gameTime)
+    {
+		monoBehaviour.UpdateMono(gameTime, this);
     }
 
+	public void Draw(SpriteBatch spriteB)
+    {
+		monoBehaviour.DrawMono(spriteB, this);
+	}
+	
 	public void isActive(bool active)
-    {
+	{
 		transform.Active = active;
-    }
+	}
+
+	public T GetComponent<T>() where T : MonoBehaviour
+	{
+		for (int i = 0; i < _components.Count; i++)
+		{
+			MonoBehaviour currentBehaviour = _components[i];
+			if (currentBehaviour is T) return currentBehaviour as T;
+		}
+		return null;
+	}
 }
