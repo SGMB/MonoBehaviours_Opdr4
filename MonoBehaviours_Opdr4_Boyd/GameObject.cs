@@ -31,7 +31,7 @@ public class GameObject
 		set { transform = value; }
 	}
 
-	public void Update(GameTime gameTime)
+	public virtual void Update(GameTime gameTime)
     {
 		monoBehaviour.UpdateMono(gameTime, this);
     }
